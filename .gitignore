@@ -1,0 +1,15 @@
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+.elixir_ls/
+/.vscode
+/.gitconfig
+.mix_tasks
+.DS_Store
+/log
+.idea/

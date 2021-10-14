@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <link href="/static/tailwind.min.css" rel="stylesheet">
+  <script type="application/javascript" defer="defer" src="/static/index.js"></script>
+  <title>Chat</title>
+</head>
+
+<body>
+  <div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen px-3">
+    <div class="h-1/2">
+      <div class="flex sm:items-center justify-between py-1.5">
+        <p>Чат-комната:&nbsp;<span id="room-label"></span></p>
+        <p>Имя:&nbsp;<span id="user-label"></span></p>
+      </div>
+      <div class="flex sm:items-center justify-between py-1.5">
+        Создать комнату:
+        <input id="room-name"
+          class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 mx-4 block w-full appearance-none leading-normal"
+          placeholder="Введите название комнаты">
+        <button id="create-room"
+          class="submit bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+          Готово
+        </button>
+      </div>
+      <div class="flex sm:items-center justify-between py-1.5">
+        Сменить имя:
+        <input id="user-name"
+          class="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 mx-4 block w-full appearance-none leading-normal"
+          placeholder="Введите Ваше имя">
+        <button id="set-name"
+          class="submit bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+          Готово
+        </button>
+      </div>
+      <div class="flex sm:items-center justify-between py-3 border-b-2 border-gray-200 py-1.5">
+        Сменить комнату:<ul id="rooms" class="flex"></ul>
+      </div>
+    </div>
+    <div id="messages"
+      class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+    </div>
+    <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+      <div class="relative flex">
+        <input id="message" type="text" placeholder="Введите сообщение"
+          class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-full py-3">
+        <div class="absolute right-0 items-center inset-y-0 sm:flex">
+          <button id="send-message" type="button"
+            class="submit inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              class="h-6 w-6 transform rotate-90">
+              <path
+                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+              </path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .scrollbar-w-2::-webkit-scrollbar {
+      width: 0.25rem;
+      height: 0.25rem;
+    }
+
+    .scrollbar-track-blue-lighter::-webkit-scrollbar-track {
+      --bg-opacity: 1;
+      background-color: #f7fafc;
+      background-color: rgba(247, 250, 252, var(--bg-opacity));
+    }
+
+    .scrollbar-thumb-blue::-webkit-scrollbar-thumb {
+      --bg-opacity: 1;
+      background-color: #edf2f7;
+      background-color: rgba(237, 242, 247, var(--bg-opacity));
+    }
+
+    .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+      border-radius: 0.25rem;
+    }
+  </style>
+</body>
+
+</html>
