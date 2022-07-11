@@ -1,8 +1,12 @@
 defmodule Chat do
   use Application
 
+  require Logger
+
   @impl true
   def start(_type, _args) do
+    Logger.info("App starting...")
+
     children = [
       %{
         id: :chat,
@@ -29,10 +33,12 @@ defmodule Chat do
     :cowboy_router.compile([
       {:_,
        [
-         {"/", :cowboy_static, {:file, "priv/static/index.html"}},
-         {"/static/[...]", :cowboy_static, {:dir, "priv/static"}},
+         {"/", :cowboy_static, {:file, priv_dir() <> "/static/index.html"}},
+         {"/static/[...]", :cowboy_static, {:dir, priv_dir() <> "/static"}},
          {"/ws/[...]", Chat.WSHandler, []}
        ]}
     ])
   end
+
+  defp priv_dir, do: List.to_string(:code.priv_dir(:chat))
 end
