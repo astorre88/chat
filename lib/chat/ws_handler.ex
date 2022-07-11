@@ -40,7 +40,7 @@ defmodule Chat.WSHandler do
      state}
   end
 
-  def websocket_handle({:text, json}, %{room_name: room_name, user_name: user_name} = state) do
+  def websocket_handle({:text, json}, %{room_name: _room_name, user_name: _user_name} = state) do
     Logger.info(
       "received message #{inspect(json)} from #{inspect(self())}, state: #{inspect(state)}"
     )
@@ -50,9 +50,7 @@ defmodule Chat.WSHandler do
 
   def websocket_handle(frame, state) do
     Logger.warn(
-      "received unmatched message #{inspect(frame)} from #{inspect(self())}, state: #{
-        inspect(state)
-      }"
+      "received unmatched message #{inspect(frame)} from #{inspect(self())}, state: #{inspect(state)}"
     )
 
     {:ok, state}

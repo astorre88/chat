@@ -229,7 +229,7 @@ defmodule Chat.WSHandlerTest do
 
           assert %{
                    "event" => "set_room",
-                   "payload" => %{"rooms" => ["abc", "Chat"]},
+                   "payload" => %{"rooms" => ["Chat", "abc"]},
                    "status" => "ok",
                    "topic" => "Chat"
                  } = Jason.decode!(message)
@@ -244,7 +244,7 @@ defmodule Chat.WSHandlerTest do
 
           assert %{
                    "event" => "set_room",
-                   "payload" => %{"rooms" => ["abc", "Chat"]},
+                   "payload" => %{"rooms" => ["Chat", "abc"]},
                    "status" => "ok",
                    "topic" => "Chat"
                  } = Jason.decode!(message)
