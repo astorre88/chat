@@ -76,7 +76,7 @@ defmodule Chat.WSHandler do
        ) do
     current_pid = self()
 
-    Registry.dispatch(Registry.Chat, room_name, fn entries ->
+    Horde.Registry.dispatch(Registry.Chat, room_name, fn entries ->
       for {pid, _} <- entries do
         if pid != current_pid do
           Process.send(
@@ -111,7 +111,7 @@ defmodule Chat.WSHandler do
          %{"data" => %{"change_room" => new_room_name}},
          %{room_name: room_name, user_name: user_name} = state
        ) do
-    Registry.unregister_match(Registry.Chat, room_name, {})
+    Horde.Registry.unregister_match(Registry.Chat, room_name, {})
     register(new_room_name)
 
     {:reply,
@@ -145,15 +145,16 @@ defmodule Chat.WSHandler do
   end
 
   defp rooms() do
-    Registry.Chat |> Registry.select([{{:"$1", :_, :_}, [], [:"$1"]}]) |> Enum.uniq()
+    Registry.Chat |> Horde.Registry.select([{{:"$1", :_, :_}, [], [:"$1"]}]) |> Enum.uniq()
   end
 
   defp register(room_name) do
-    Registry.register(Registry.Chat, room_name, {})
+    Horde.Registry.register(Registry.Chat, room_name, {})
     current_pid = self()
     rooms_list = rooms()
+    Logger.info("Registered new room: #{room_name}\nRooms list: #{inspect(rooms_list)}")
 
-    for pid <- Registry.select(Registry.Chat, [{{:_, :"$2", :_}, [], [:"$2"]}]) do
+    for pid <- Horde.Registry.select(Registry.Chat, [{{:_, :"$2", :_}, [], [:"$2"]}]) do
       if pid != current_pid do
         Process.send(
           pid,

@@ -5,7 +5,7 @@ defmodule Chat.BotTest do
   alias Chat.Response
 
   setup_all do
-    start_supervised({Registry, keys: :duplicate, name: Registry.Chat})
+    start_supervised({Horde.Registry, keys: :duplicate, name: Registry.Chat})
     :ok
   end
 
@@ -13,7 +13,7 @@ defmodule Chat.BotTest do
     test "sends random message to registered but not to initiator" do
       connection1 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "chat", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "chat", {})
 
           receive do
             :proceed -> :ok
@@ -38,7 +38,7 @@ defmodule Chat.BotTest do
 
       connection2 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "chat", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "chat", {})
 
           send(connection1.pid, :proceed)
           assert_receive message
@@ -53,7 +53,7 @@ defmodule Chat.BotTest do
 
       connection3 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "chat", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "chat", {})
 
           send(connection1.pid, :proceed)
           assert_receive message

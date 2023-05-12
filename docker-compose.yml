@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   web:
-    container_name: chat
+    container_name: superchat
     build:
       context: .
     ports:

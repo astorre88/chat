@@ -60,7 +60,7 @@
                 parsedResponse.payload.foreign ? otherMessage : myMessage
               }${
                 parsedResponse.payload.message
-              }</span></div></div><span class="order-1">${
+              } ${new Date().toLocaleTimeString()}</span></div></div><span class="order-1">${
                 parsedResponse.payload.foreign
                   ? parsedResponse.payload.name
                   : "Вы"
@@ -210,7 +210,9 @@
     }
   }
 
-  const defaultRoomURL = "ws://localhost:4000/ws/chat";
+  console.log("window.location.host: " + window.location.host);
+
+  const defaultRoomURL = "ws://" + window.location.host + "/ws/chat";
   const websocketClass = new myWebsocketHandler("chat");
   websocketClass.setupSocket(defaultRoomURL);
 

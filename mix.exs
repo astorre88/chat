@@ -30,7 +30,9 @@ defmodule Chat.MixProject do
   defp deps do
     [
       {:cowboy, "~> 2.8.0"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:libcluster, "~> 3.3.1"},
+      {:horde, "~> 0.8.7"}
     ]
   end
 end

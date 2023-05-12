@@ -18,10 +18,14 @@ defmodule Chat.Bot do
         topic: "bot_room",
         event: "reply",
         status: :ok,
-        payload: %{message: Enum.random(@anecdotes), name: "Бот", foreign: true}
+        payload: %{
+          message: "Node: #{inspect(node())}\n" <> Enum.random(@anecdotes),
+          name: "Бот",
+          foreign: true
+        }
       })
 
-    for pid <- Registry.select(Registry.Chat, [{{:_, :"$2", :_}, [], [:"$2"]}]) do
+    for pid <- Horde.Registry.select(Registry.Chat, [{{:_, :"$2", :_}, [], [:"$2"]}]) do
       Process.send(pid, encoded, [])
     end
   end

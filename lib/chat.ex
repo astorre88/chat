@@ -6,8 +6,23 @@ defmodule Chat do
   @impl true
   def start(_type, _args) do
     Logger.info("App starting...")
+    Logger.info("RELEASE_DISTRIBUTION: " <> System.get_env("RELEASE_DISTRIBUTION"))
+    Logger.info("RELEASE_NODE_IP: " <> System.get_env("RELEASE_NODE_IP"))
+    Logger.info("RELEASE_NAME: " <> System.get_env("RELEASE_NAME"))
+    Logger.info("RELEASE_NODE: " <> System.get_env("RELEASE_NODE"))
+    Logger.info("RELEASE_COOKIE: " <> System.get_env("RELEASE_COOKIE"))
 
     children = [
+      {Cluster.Supervisor,
+       [Application.get_env(:libcluster, :topologies), [name: Chat.ClusterSupervisor]]},
+      {Horde.Registry, [name: Registry.Chat, keys: :unique, members: :auto]},
+      {Horde.DynamicSupervisor,
+       [
+         name: Chat.BotSupervisor,
+         strategy: :one_for_one,
+         members: [Chat.BotServer],
+         members: :auto
+       ]},
       %{
         id: :chat,
         start:
@@ -20,12 +35,13 @@ defmodule Chat do
         restart: :permanent,
         shutdown: :infinity,
         type: :supervisor
-      },
-      {Registry, keys: :duplicate, name: Registry.Chat},
-      Chat.BotServer
+      }
+      # {Registry, keys: :duplicate, name: Registry.Chat},
+      # Chat.BotServer
     ]
 
     opts = [strategy: :one_for_one, name: Chat.Supervisor]
+    Logger.info("App started")
     Supervisor.start_link(children, opts)
   end
 

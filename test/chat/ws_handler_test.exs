@@ -7,7 +7,7 @@ defmodule Chat.WSHandlerTest do
   @moduletag capture_log: true
 
   setup_all do
-    start_supervised({Registry, keys: :duplicate, name: Registry.Chat})
+    start_supervised({Horde.Registry, keys: :duplicate, name: Registry.Chat})
     :ok
   end
 
@@ -46,7 +46,7 @@ defmodule Chat.WSHandlerTest do
                Subject.websocket_init(struct(Subject))
 
       assert [{"room1", ^self_pid}] =
-               Registry.select(Registry.Chat, [{{:"$1", :"$2", :_}, [], [{{:"$1", :"$2"}}]}])
+               Horde.Registry.select(Registry.Chat, [{{:"$1", :"$2", :_}, [], [{{:"$1", :"$2"}}]}])
     end
   end
 
@@ -94,7 +94,7 @@ defmodule Chat.WSHandlerTest do
 
       room_connection1 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "room1", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "room1", {})
 
           receive do
             :proceed -> :ok
@@ -123,7 +123,7 @@ defmodule Chat.WSHandlerTest do
 
       foreign_connection =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "chat", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "chat", {})
 
           send(room_connection1.pid, :proceed)
 
@@ -144,7 +144,7 @@ defmodule Chat.WSHandlerTest do
 
       room_connection2 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "room1", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "room1", {})
 
           send(room_connection1.pid, :proceed)
           assert_receive message
@@ -181,12 +181,12 @@ defmodule Chat.WSHandlerTest do
       Subject.websocket_init(state)
 
       assert [{"room1", ^self_pid}] =
-               Registry.select(Registry.Chat, [{{:"$1", :"$2", :_}, [], [{{:"$1", :"$2"}}]}])
+               Horde.Registry.select(Registry.Chat, [{{:"$1", :"$2", :_}, [], [{{:"$1", :"$2"}}]}])
 
       Subject.websocket_handle({:text, request_message}, state)
 
       assert [{"Chat", ^self_pid}] =
-               Registry.select(Registry.Chat, [{{:"$1", :"$2", :_}, [], [{{:"$1", :"$2"}}]}])
+               Horde.Registry.select(Registry.Chat, [{{:"$1", :"$2", :_}, [], [{{:"$1", :"$2"}}]}])
     end
 
     test "notifies everyone with a new room except initiator", %{state: state} do
@@ -194,7 +194,7 @@ defmodule Chat.WSHandlerTest do
 
       room_connection1 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "room1", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "room1", {})
 
           receive do
             :proceed -> :ok
@@ -221,7 +221,7 @@ defmodule Chat.WSHandlerTest do
 
       room_connection2 =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "Chat", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "Chat", {})
 
           send(room_connection1.pid, :proceed)
 
@@ -237,7 +237,7 @@ defmodule Chat.WSHandlerTest do
 
       foreign_connection =
         Task.async(fn ->
-          {:ok, _} = Registry.register(Registry.Chat, "abc", {})
+          {:ok, _} = Horde.Registry.register(Registry.Chat, "abc", {})
 
           send(room_connection1.pid, :proceed)
           assert_receive message

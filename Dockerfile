@@ -75,4 +75,18 @@ COPY --from=builder --chown=nobody:root /app/_build/prod/rel/chat ./
 
 USER nobody
 
+## Configure environment
+
+# We want a FQDN in the nodename
+ENV RELEASE_DISTRIBUTION="name"
+
+# This value should be overriden at runtime
+# ENV RELEASE_NODE_IP="127.0.0.1"
+
+# This will be the basename of our node
+# ENV RELEASE_NAME="chat"
+
+# This will be the full nodename
+# ENV RELEASE_NODE="${RELEASE_NAME}@${RELEASE_NODE_IP}"
+
 CMD ["/app/bin/chat", "start"]
